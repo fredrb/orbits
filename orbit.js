@@ -1,141 +1,60 @@
-function Space(canvasId) {
-  this.canvas = document.getElementById(canvasId);
-  this.context = this.canvas.getContext("2d");
-
-  this.canvas.width = window.innerWidth;
-  this.canvas.height = window.innerHeight;
-
-  this.context.shadowBlur = 15
-  this.context.shadowColor = 'white';
-  this.context.shadowOffsetX = 0;
-  this.context.shadowOffsetY = 0;
-
-  this.drawQueue = [];
-};
-
-Space.prototype.clear = function() {
-  this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-};
-
-Space.prototype._loop_ = function() {
-  this.clear();
-  this.drawQueue.forEach(function(d) { d.fn(this.context, d.param) }.bind(this));
-};
-
-Space.prototype.initialize = function() {
-  setInterval(this._loop_.bind(this), 20);
-}
-
-Space.prototype.appendAnimation = function(animationParam, animationFn) {
-  this.drawQueue.push({
-    fn : animationFn,
-    param: animationParam
-  });
-};
-
-function circlePath(centerX, centerY, radius, angleInDegrees) {
-  var angleInRadians = (angleInDegrees-90) * Math.PI / 180.0;
-
-  return {
-    x: centerX + (radius * Math.cos(angleInRadians)),
-    y: centerY + (radius * Math.sin(angleInRadians))
-  };
-}
-
 (function() {
 
   var space = new Space('space');
 
-  space.appendAnimation({radius: 15, angle: 0}, function(context, options) {
-    context.beginPath();
-
-    var coordinates = circlePath(1000, 500, options.radius, options.angle);
-    context.ellipse(coordinates.x, coordinates.y, 15, 14, 0, 0, 2 * Math.PI);
-
-
-
-    context.strokeStyle = "#FFFFFF";
-    context.stroke();
-
-    context.fillStyle = "yellow";
-    context.fill();
-
-    context.closePath();
-
+  // star
+  space.appendAnimation({radius: 7, angle: 0}, function(context, options) {
+    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
+    Draw.circle(context, 15, coordinates.x, coordinates.y, 'yellow');
     options.angle++;
-
   });
 
-  space.appendAnimation({radius: 175, angle: 0}, function(context, options) {
-    context.beginPath();
+  // blue
+  space.appendAnimation({radius: 175, angle: 0, moonAngle: 0}, function(context, options) {
 
-    var coordinates = circlePath(1000, 500, options.radius, options.angle);
-    context.ellipse(coordinates.x, coordinates.y, 3, 3, 0, 0, 2 * Math.PI);
+    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
+    Draw.circle(context, 3, coordinates.x, coordinates.y, 'rgb(122, 110, 221)');
 
-    context.strokeStyle = "#FFFFFF";
-    context.stroke();
-
-    context.fillStyle = "rgb(122, 110, 221)";
-    context.fill();
-
-    context.closePath();
+    var moonCoordinates = Util.circlePath(coordinates.x, coordinates.y, 10, options.moonAngle);
+    Draw.circle(context, 1, moonCoordinates.x, moonCoordinates.y, 'white');
 
     options.angle = options.angle - 0.7;
-
+    options.moonAngle = options.moonAngle + 3;
   });
 
-  space.appendAnimation({radius: 450, angle: 0}, function(context, options) {
-    context.beginPath();
-
-    var coordinates = circlePath(1000, 500, options.radius, options.angle);
-    context.ellipse(coordinates.x, coordinates.y, 6, 5, 0, 0, 2 * Math.PI);
-
-    context.strokeStyle = "#FFFFFF";
-    context.stroke();
-
-    context.fillStyle = "rgb(111, 221, 181)";
-    context.fill();
-
-    context.closePath();
-
-    options.angle = options.angle + 2;
-
-  });
-
+  // red
   space.appendAnimation({radius: 300, angle: 0}, function(context, options) {
-    context.beginPath();
-
-    var coordinates = circlePath(1000, 500, options.radius, options.angle);
-    context.ellipse(coordinates.x, coordinates.y, 4, 4, 0, 0, 2 * Math.PI);
-
-    context.strokeStyle = "#FFFFFF";
-    context.stroke();
-
-    context.fillStyle = "rgb(249, 166, 140)";
-    context.fill();
-
-    context.closePath();
-
+    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
+    Draw.circle(context, 4, coordinates.x, coordinates.y, 'rgb(249, 166, 140)');
     options.angle++;
-
   });
 
-  // space.appendAnimation({ x: 100, y: 200 }, function(context, options) {
-  //   context.beginPath();
-  //
-  //   context.ellipse(options.x, options.y, 10, 10, 0, 0, 2 * Math.PI);
-  //
-  //   context.strokeStyle = "#FFFFFF";
-  //   context.stroke();
-  //
-  //   context.fillStyle = "yellow";
-  //   context.fill();
-  //
-  //   context.closePath();
-  //
-  //   options.x++;
-  //   options.y++;
-  // });
+  // green
+  space.appendAnimation({radius: 450, angle: 0, moonAngle:0, moonAngle2:0, moonAngle3:0}, function(context, options) {
+    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
+    Draw.circle(context, 6, coordinates.x, coordinates.y, 'rgb(111, 221, 181)');
+    options.angle = options.angle + 0.6;
+
+    var moonCoordinates = Util.circlePath(coordinates.x, coordinates.y, 15, options.moonAngle);
+    Draw.circle(context, 1, moonCoordinates.x, moonCoordinates.y, 'white');
+
+    options.angle = options.angle - 0.7;
+    options.moonAngle = options.moonAngle + 3
+
+    var moonCoordinates2 = Util.circlePath(coordinates.x, coordinates.y, 20, options.moonAngle2);
+    Draw.circle(context, 1, moonCoordinates2.x, moonCoordinates2.y, 'rgb(80, 83, 36)');
+
+    options.angle = options.angle - 0.7;
+    options.moonAngle = options.moonAngle + 3
+
+    var moonCoordinates3 = Util.circlePath(coordinates.x, coordinates.y, 30, options.moonAngle3);
+    Draw.circle(context, 1, moonCoordinates3.x, moonCoordinates3.y, 'rgb(47, 36, 27)');
+
+    options.angle = options.angle + 1;
+    options.moonAngle = options.moonAngle + 3
+    options.moonAngle2 = options.moonAngle2 + 4
+    options.moonAngle3 = options.moonAngle3 + 3.5
+  });
 
   space.initialize();
 
