@@ -1,66 +1,73 @@
-(function() {
-
+(function(){
   var space = new Space('space');
-
-  // star
-  space.appendAnimation({radius: 7, angle: 0}, function(context, options) {
-    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
-    Draw.circle(context, 15, coordinates.x, coordinates.y, 'yellow');
-    options.angle++;
-    if (options.angle > 360) options.angle = options.angle - 360;
-  });
-
-  // blue
-  space.appendAnimation({radius: 175, angle: 0, moonAngle: 0}, function(context, options) {
-
-    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
-    Draw.circle(context, 3, coordinates.x, coordinates.y, 'rgb(122, 110, 221)');
-
-    var moonCoordinates = Util.circlePath(coordinates.x, coordinates.y, 10, options.moonAngle);
-    Draw.circle(context, 1, moonCoordinates.x, moonCoordinates.y, 'white');
-
-    options.angle = options.angle - 0.7;
-    options.moonAngle = options.moonAngle + 3;
-    if (options.angle > 360) options.angle = options.angle - 360;
-  });
-
-  // red
-  space.appendAnimation({radius: 300, angle: 0}, function(context, options) {
-    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
-    Draw.circle(context, 4, coordinates.x, coordinates.y, 'rgb(249, 166, 140)');
-    options.angle++;
-    if (options.angle > 360) options.angle = options.angle - 360;
-  });
-
-  // green
-  space.appendAnimation({radius: 450, angle: 0, moonAngle:0, moonAngle2:0, moonAngle3:0}, function(context, options) {
-    var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
-    Draw.circle(context, 6, coordinates.x, coordinates.y, 'rgb(111, 221, 181)');
-    options.angle = options.angle + 0.6;
-
-    var moonCoordinates = Util.circlePath(coordinates.x, coordinates.y, 15, options.moonAngle);
-    Draw.circle(context, 1, moonCoordinates.x, moonCoordinates.y, 'white');
-
-    options.angle = options.angle - 0.7;
-    options.moonAngle = options.moonAngle + 3
-
-    var moonCoordinates2 = Util.circlePath(coordinates.x, coordinates.y, 20, options.moonAngle2);
-    Draw.circle(context, 1, moonCoordinates2.x, moonCoordinates2.y, 'rgb(80, 83, 36)');
-
-    options.angle = options.angle - 0.7;
-    options.moonAngle = options.moonAngle + 3
-
-    var moonCoordinates3 = Util.circlePath(coordinates.x, coordinates.y, 30, options.moonAngle3);
-    Draw.circle(context, 1, moonCoordinates3.x, moonCoordinates3.y, 'rgb(47, 36, 27)');
-
-    options.angle = options.angle + 1;
-    options.moonAngle = options.moonAngle + 3
-    options.moonAngle2 = options.moonAngle2 + 4
-    options.moonAngle3 = options.moonAngle3 + 3.5
-
-    if (options.angle > 360) options.angle = options.angle - 360;
-  });
-
   space.initialize();
+
+  var mainStar = space.createStar({
+    size : 12,
+    style : 'yellow',
+    center : true,
+    speed : 7,
+    glow : 8
+  })
+    .bind(space.createStar({
+      size : 2,
+      style : '#ee7e7e',
+      radius : 75,
+      speed : 6,
+      initialAngle : 180,
+      glow : 2
+    }))
+    .bind(space.createStar({
+      size : 3.5,
+      style : '#a6e278',
+      radius : 140,
+      speed : 4.5,
+      initialAngle : 200,
+      glow : 2
+    }))
+    .bind(space.createStar({
+      size : 5,
+      style : '#5baff9',
+      radius : 200,
+      speed : 3,
+      glow : 2
+    })
+      .bind(space.createStar({
+        size : 2,
+        style : 'white',
+        radius : 6,
+      }))
+    )
+    .bind(space.createStar({
+      size : 4,
+      style : '#ff6161',
+      radius : 280,
+      speed : 4,
+      initialAngle : 300,
+      glow : 2
+    }))
+
+  // asteroid fields
+
+  for(var i = 0; i < 360; i+= Math.random() * 5) {
+    mainStar.bind(space.createStar({
+      size : 2,
+      style : '#786750',
+      radius : 360 + Math.random() * 8,
+      initialAngle : i,
+      speed : 2
+    }));
+
+  };
+
+  for(var i = 0; i < 360; i+= Math.random() * 5) {
+    mainStar.bind(space.createStar({
+      size : 2,
+      style : '#786750',
+      radius : 370 + Math.random() * 8,
+      initialAngle : i,
+      speed : 2.5
+    }));
+  };
 
 })();
