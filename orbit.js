@@ -7,6 +7,7 @@
     var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
     Draw.circle(context, 15, coordinates.x, coordinates.y, 'yellow');
     options.angle++;
+    if (options.angle > 360) options.angle = options.angle - 360;
   });
 
   // blue
@@ -20,6 +21,7 @@
 
     options.angle = options.angle - 0.7;
     options.moonAngle = options.moonAngle + 3;
+    if (options.angle > 360) options.angle = options.angle - 360;
   });
 
   // red
@@ -27,6 +29,7 @@
     var coordinates = Util.circlePath(1000, 500, options.radius, options.angle);
     Draw.circle(context, 4, coordinates.x, coordinates.y, 'rgb(249, 166, 140)');
     options.angle++;
+    if (options.angle > 360) options.angle = options.angle - 360;
   });
 
   // green
@@ -54,6 +57,8 @@
     options.moonAngle = options.moonAngle + 3
     options.moonAngle2 = options.moonAngle2 + 4
     options.moonAngle3 = options.moonAngle3 + 3.5
+
+    if (options.angle > 360) options.angle = options.angle - 360;
   });
 
   space.initialize();
