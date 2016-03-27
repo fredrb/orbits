@@ -79,7 +79,7 @@ Space.prototype._drawStar_ = function(size, x, y, color, glow) {
   }
 
   this.context.beginPath();
-  this.context.ellipse(x, y, size, size, 0, 0, Math.PI * 2);
+  this.context.arc(x, y, size, 0, Math.PI * 2);
   this.context.fillStyle = color || 'white';
   this.context.fill();
   this.context.closePath();
