@@ -35,7 +35,8 @@
       .bind(space.createStar({
         size : 2,
         style : 'white',
-        radius : 6,
+        radius : 8,
+        speed : 2
       }))
     )
     .bind(space.createStar({
