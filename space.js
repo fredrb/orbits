@@ -13,8 +13,15 @@ Space.prototype.initialize = function(options) {
     this._drawScene_();
   }.bind(this), false);
 
-  setInterval(this._loop_.bind(this), 60);
+  this.animationLoop();
 };
+
+Space.prototype.animationLoop = function() {
+  setTimeout(function() {
+    window.requestAnimationFrame(this.animationLoop.bind(this));
+    this._loop_();
+  }.bind(this), 30);
+}
 
 Space.prototype.createStar = function(properties) {
   properties.canvas = this.canvas;
